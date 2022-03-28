@@ -8,6 +8,6 @@ OPN3LPT driver for IBM PC/XT, PC/AT and compatible.
 
 Using Masm 6.0 do this command:
   
-    masm /Zm /AT pmdlpt.asm
+    ml /Zm /AT pmdlpt.asm
   
 Done!  
