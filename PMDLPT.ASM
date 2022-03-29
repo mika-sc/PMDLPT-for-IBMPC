@@ -22,7 +22,7 @@ _optnam	equ	"(ADPCM)"
 ;			By M.Kajihara
 ;==============================================================================
  
-ver		equ	"4.8t-Alpha-b21"
+ver		equ	"4.8t-Alpha-b25"
 vers		equ	48H
 verc		equ	"s"
 date		equ	"2022"
@@ -7934,7 +7934,8 @@ eoi_send:
 	out	dx,al		;(ì¡éÍEOI)FMâπåπÇÃINTÇÃÇ›EOI
 
 	cmp	dx,ms_cmd	;MasterÇæÇ¡ÇΩÇÁ
-	jz	eoi_1		;SlaveÇÃISRÇí≤Ç◊Ç»Ç¢
+	;jz	eoi_1		;SlaveÇÃISRÇí≤Ç◊Ç»Ç¢
+	jmp eoi_1       ;?çs?ëñ
 	mov	al,0bh
 	mov	dx,sl_cmd
 	out	dx,al
@@ -10377,7 +10378,8 @@ intset:
 	mov	cl,al
 	mov	dx,ms_msk
 	cmp	cl,8	;master?
-	jc	intset2
+	;jc	intset2
+	jmp intset2
 	sub	cl,8
 	in	al,dx
 if	va
@@ -10423,10 +10425,11 @@ intset2:
 ;==============================================================================
 intpop:
 	mov	dx,ms_msk
-	cmp	al,8	;master?
-	jc	intpop2
-	sub	al,8
-	mov	dx,sl_msk
+	;cmp	al,8	;master?
+	;jc	intpop2
+	jmp intpop2
+	;sub	al,8
+	;mov	dx,sl_msk
 intpop2:
 	in	al,dx
 	push	es
@@ -11130,7 +11133,7 @@ pmderror_mes2	db	"Please set data buffer of this song over 1KB!",13,10,eof
 pmderror_mes3	db	"Please set size of melody, tone and sound effects within 40KB.",13,10,eof
 pmderror_mes4	db	"Failed in releasing driver!",13,10,eof
 pmderror_mes5	db	"PMD is not installed now.",13,10,eof
-pmderror_mes6	db	"An option that cannot be changed is specified.",13,10,eof
+pmderror_mes6	db	"You mentioned an option that cannot be changed!",13,10,eof
 pmderror_mes7	db	"Memory cannot be secured.",13,10,eof
 
 mes_exit	db	"Driver installed.",13,10
@@ -11143,22 +11146,22 @@ mes_kankyo	db	"Error setting environment variable pmdopt.",13,10,eof
 
 mes_usage	db	"Usage:",9,"PMD"
 if	va
-		db	"LPT"
+		db	"VA"
  ife	board2
-		db	"LPT"
+		db	"1"
  endif
 else
  if	board2
   if pcm
-		db	"LPT"
+		db	"LPT86"
   else
    if ppz
-		db	"LPT"
+		db	"LPT-PPZ"
    else
-		db	"LPT"
+		db	"LPTB2"
    endif
    if ademu
-		db	"LPT"
+		db	"LPTE"
    endif
   endif 
  endif
