@@ -19,6 +19,6 @@ vchk_com_loop:
 
 vchk:	call	viruschk
 	jnc	vchk_exit
-	include	virusend.inc
+	;include	virusend.inc
 vchk_exit:
 

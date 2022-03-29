@@ -22,7 +22,7 @@ _optnam	equ	"(ADPCM)"
 ;			By M.Kajihara
 ;==============================================================================
  
-ver		equ	"4.8t-b17"
+ver		equ	"4.8t-Alpha-b21"
 vers		equ	48H
 verc		equ	"s"
 date		equ	"2022"
@@ -11079,7 +11079,6 @@ mes_not_board	db	"OPN3LPT not found at 378H!",13,10,eof
 else
 mes_not_board	db	"FM Music Board not installed!",13,10,eof
 endif
-
 if	lpt
 mes_trace_init	db	"initing...",13,10,eof
 mes_trace_adpcm_ramchk	db	"ADPCM RAM CHECK PASS.",13,10,eof
@@ -11087,9 +11086,9 @@ endif
 
 mes_cut		db	"Driver released.",13,10,eof
 
-mes_title	db	"Music Driver P.M.D. for IBM PC/XT, PC/AT and compatible, Version ",ver
+mes_title	db	"Music Driver P.M.D. for IBM PC/XT, PC/AT and compatible, v",ver
 ifdef	_optnam
-		db	_optnam
+		;db	_optnam
 endif
 		db	13,10
 		db	"Copyright (C)1989,",date," by M.Kajihara(KAJA). Translated by OctSL.",13,10,13,10,eof
