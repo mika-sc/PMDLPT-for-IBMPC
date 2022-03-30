@@ -22,7 +22,7 @@ _optnam	equ	"(ADPCM)"
 ;			By M.Kajihara
 ;==============================================================================
  
-ver		equ	"4.8t-Alpha-b29"
+ver		equ	"4.8t-Alpha-b35"
 vers		equ	48H
 verc		equ	"s"
 date		equ	"2022"
@@ -9665,6 +9665,8 @@ endif
 ;==============================================================================
 port_check:
 if	va
+	testt db "aVA",13,10,eof
+	print_mes testt
 	mov	[fm1_port1],44h
 	mov	[fm1_port2],45h
 	mov	[fm2_port1],46h
@@ -9717,13 +9719,17 @@ va_norm_ret:
 	ret
 else
 
-if lpt
+;testt db "aOUT",13,10,eof
+;print_mes testt
+	if lpt
 ;------------------------------------------------------------------------------
 ;	98+LPT ÇÃ check		(PMDLPT)
 ;------------------------------------------------------------------------------
+		;testta db "aIN",13,10,eof
+		;print_mes testta
 		call check_lpt
 		ret
-endif
+	endif
 
  if	board2
   if	pcm+ppz
@@ -9947,18 +9953,27 @@ check_lpt:
 	mov	[ongen],1
 	mov	[epson_flag],0
 	cli
-	mov	dx,149h
-	mov	al,10h
-	out	dx,al	;open LPT port
-	mov	dx,14eh
-	mov	al,35h
-	out	dx,al	;switch LPT to PS/2 mode(Bi-dir)
+	
+	;mov	dx,149h
+	;mov	al,10h
+	;out	dx,al	;open LPT port
+	;mov	dx,14eh
+	;mov	al,35h
+	;out	dx,al	;switch LPT to PS/2 mode(Bi-dir)
+	
 	mov	dx,378H
 	mov	al,0FFh
 	out	dx,al	;write 0xFF to LPT
+	
 	mov	dx,37AH
 	mov	al,0Dh
 	out	dx,al	;set A0=0;A1=0;WR=1;RD=1	output
+	
+	;testtb db "aCHKLPT",13,10,eof
+	;print_mes testtb
+	
+	;A1* #WR #RD* A0* 
+	
 	mov	cx,100
 	loop	$	;delay 10 cycles
 	mov	al,09h
@@ -9980,23 +9995,25 @@ check_lpt:
 	mov	dx,37AH	;bug fixed
 	mov	al,0Dh
 	out	dx,al	;set A0=0;A1=0;WR=1;RD=1	output	IRQoff
-	add	bl,1	;check if bl=FFh
-	jz	pc_error
+	;add	bl,1	;check if bl=FFh
+	;jz	pc_error
+	cmp bl,080H     ;check if bl=80h
+	jnz pc_error
 
 	sti
-	mov	dx,188h
+	;mov	dx,188h
 	jmp	set_port
 ;------------------------------------------------------------------------------
 ;	É|Å[Égê›íË
 ;------------------------------------------------------------------------------
 set_port:
-	mov	[fm1_port1],dx
-	add	dx,2
-	mov	[fm1_port2],dx
-	add	dx,2
-	mov	[fm2_port1],dx
-	add	dx,2
-	mov	[fm2_port2],dx
+;	mov	[fm1_port1],dx
+;	add	dx,2
+;	mov	[fm1_port2],dx
+;	add	dx,2
+;	mov	[fm2_port1],dx
+;	add	dx,2
+;	mov	[fm2_port2],dx
 	clc
 	ret
 endif
