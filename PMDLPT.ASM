@@ -22,7 +22,7 @@ _optnam	equ	"(ADPCM)"
 ;			By M.Kajihara
 ;==============================================================================
  
-ver		equ	"4.8t-Alpha-b25"
+ver		equ	"4.8t-Alpha-b29"
 vers		equ	48H
 verc		equ	"s"
 date		equ	"2022"
@@ -8764,6 +8764,13 @@ endif
 
 	mov	ax,cs
 	mov	ds,ax
+	
+	print_mes   pmdlogo1
+	print_mes   pmdlogo2
+	print_mes   pmdlogo3
+	print_mes   pmdlogo4
+	print_mes   pmdlogo5
+	
 	print_mes	mes_title	;タイトル表示
 
 	pop	ds
@@ -11071,11 +11078,16 @@ eof	equ	0
 else
 eof	equ	"$"
 endif
-
+ 
+pmdlogo1 db 13,10,"|IIII\         |\   /|      |IIII\   for  |     |III\ IIIII (PC/AT)",13,10,eof
+pmdlogo2 db "||   ||        ||\ /||      ||   ||       |     |___/   |   ",13,10,eof
+pmdlogo3 db "||III/         ||   ||      ||   ||       |____ |       |   ",13,10,eof
+pmdlogo4 db "||             ||   ||      ||   ||       ",13,10,eof
+pmdlogo5 db "|| rofessional ||   || usic |IIII/ river   v",ver,13,10,13,10,eof
 mes_warning	db	07,"WARNING:$"
 if	board2
  if	pcm+ppz
-mes_not_board	db	"YM2608+PCM not found!",13,10,eof
+mes_not_board	db	"YM2608+ADPCM not found!",13,10,eof
  else
 mes_not_board	db	"OPN3LPT not found at 378H!",13,10,eof
  endif
@@ -11089,7 +11101,7 @@ endif
 
 mes_cut		db	"Driver released.",13,10,eof
 
-mes_title	db	"Music Driver P.M.D. for IBM PC/XT, PC/AT and compatible, v",ver
+mes_title	db	"Music Driver P.M.D. for IBM PC/XT, PC/AT and compatible."
 ifdef	_optnam
 		;db	_optnam
 endif
