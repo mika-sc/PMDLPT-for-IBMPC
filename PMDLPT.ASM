@@ -22,7 +22,7 @@ _optnam	equ	"(ADPCM)"
 ;			By M.Kajihara
 ;==============================================================================
  
-ver		equ	"4.8t-Alpha-b35"
+ver		equ	"4.8t-Alpha-b42"
 vers		equ	48H
 verc		equ	"s"
 date		equ	"2022"
@@ -8206,7 +8206,7 @@ rew:	mov	ah,[rew_sp_key]
 	mov	dx,[syousetu]
 	mov	al,[syousetu_lng]
 	shr	al,1
-	shr	al,1
+	shr	al,1	
 	cmp	[opncount],al
 	jnc	ff_music_main
 	test	dx,dx
@@ -8703,14 +8703,13 @@ pcmst_seg	dw	0
 pcmadrs		db	6*256 dup (0)
  endif
 endif
-		db	"ここはＳＴＡＣＫエリアです。いつ"
-		db	"もＰＭＤをご愛用して下さっている"
-		db	"方々、どうもありがとうございます"
-		db	"(^^)。何かバグらしき物が見つかり"
-		db	"ましたら、些細な事でも構いません"
-		db	"ので、是非私までご一報、お願いし"
-		db	"ますね(^^)。→PMDBBS [03(3395)96"
-		db	"00] @PMD ボードまで     by KAJA."
+dca 	db	"There is issue reporter.Thank u "
+dcb  	db	"very much for using PMD all the "
+dcc	    db	"time (^ ^).If you find something" 
+dcd	    db	"similar to a bug (even small th-"
+dce	    db	"ings),please be sure to inform  "
+dcf	    db	"me! (^ ^)                       "
+dcg 	db	"Telephone to Kaja: 03(3395)9600 "
 _stack:
 dataarea	label	word
 		db	0		;
@@ -8770,6 +8769,7 @@ endif
 	print_mes   pmdlogo3
 	print_mes   pmdlogo4
 	print_mes   pmdlogo5
+	print_mes   pmdlogo6
 	
 	print_mes	mes_title	;タイトル表示
 
@@ -8854,16 +8854,20 @@ rep	stosb
 	mov	[_pcm86_vol],al		;PCM音量合わせ
 	mov	[fade_stop_flag],1	;FADEOUT後MSTOPするか FLAG
 	mov	[ppsdrv_flag],-1	;PPSDRV FLAG
-if	va
-	mov	[grph_sp_key],80h	;GRPH+CTRL key code
-	mov	[rew_sp_key],40h	;GPPH+SHIFTkey code
-	mov	[esc_sp_key],80h	;ESC +CTRL key code
-else
-	mov	[grph_sp_key],10h	;GRPH+CTRL key code
-	mov	[rew_sp_key],1		;GPPH+SHIFTkey code
-	mov	[esc_sp_key],10h	;ESC +CTRL key code
-	mov	[port_sel],-1		;ポート選択 = 自動
-endif
+;if	va
+;	mov	[grph_sp_key],80h	;GRPH+CTRL key code
+;	mov	[rew_sp_key],40h	;GPPH+SHIFTkey code
+;	mov	[esc_sp_key],80h	;ESC +CTRL key code
+;else
+;	mov	[grph_sp_key],10h	;GRPH+CTRL key code
+;	mov	[rew_sp_key],1		;GPPH+SHIFTkey code
+;	mov	[esc_sp_key],10h	;ESC +CTRL key code
+;	mov	[port_sel],-1		;ポート選択 = 自動
+	
+	mov	[grph_sp_key],4		;GRPH+CTRL key code
+	mov	[rew_sp_key],4		;GPPH+SHIFTkey code
+	mov	[esc_sp_key],4		;ESC +CTRL key code
+;endif
 	mov	[ff_tempo],250
 	mov	[music_flag],al
 	mov	[message_flag],1
@@ -9255,6 +9259,9 @@ int_init:
 ;	INT番号を読み出して設定
 ;------------------------------------------------------------------------------
 	;mov	dx,[fm1_port1]
+	
+	dddd db "Initing 2..."
+	print_mes dddd
 	
 	mov	dx,37AH
 	in	al,dx
@@ -9953,6 +9960,8 @@ check_lpt:
 	mov	[ongen],1
 	mov	[epson_flag],0
 	cli
+	
+
 	
 	;mov	dx,149h
 	;mov	al,10h
@@ -11100,13 +11109,15 @@ pmdlogo1 db 13,10,"|IIII\         |\   /|      |IIII\   for  |     |III\ IIIII (
 pmdlogo2 db "||   ||        ||\ /||      ||   ||       |     |___/   |   ",13,10,eof
 pmdlogo3 db "||III/         ||   ||      ||   ||       |____ |       |   ",13,10,eof
 pmdlogo4 db "||             ||   ||      ||   ||       ",13,10,eof
-pmdlogo5 db "|| rofessional ||   || usic |IIII/ river   v",ver,13,10,13,10,eof
+pmdlogo5 db "|| rofessional ||   || usic |IIII/ river   v",ver,13,10,eof
+pmdlogo6 db "                                       Codename [KISIN SAGUME]",13,10,13,10,eof
+
 mes_warning	db	07,"WARNING:$"
 if	board2
  if	pcm+ppz
-mes_not_board	db	"YM2608+ADPCM not found!",13,10,eof
+mes_not_board	db	"YM2608+ADPCM is not found!",13,10,eof
  else
-mes_not_board	db	"OPN3LPT not found at 378H!",13,10,eof
+mes_not_board	db	"OPN3LPT is not found at 378H!",13,10,eof
  endif
 else
 mes_not_board	db	"FM Music Board not installed!",13,10,eof
@@ -11135,7 +11146,7 @@ endif
 		db	"(",eof
 mes_int2	db	")is using.",13,10,eof
 ongen_sel	dw	mes_ongen0,mes_ongen1
-mes_ongen0	db	"YM2203",eof
+mes_ongen0	db	"YMF288",eof
 mes_ongen1	db	"YM2608",eof
 
 if	board2*adpcm
@@ -11150,9 +11161,9 @@ endif
 
 mes_ppsdrv	db	"Corresponding to PPSDRV(INT64H)",13,10,eof
 if	ppz
-mes_ppz8	db	"Corresponding to PPZ8(INT7FH)",13,10,eof
+mes_ppz8	db	"Corresponding to  PPZ8 (INT7FH)",13,10,eof
 endif
-mes_wait1	db	"FM Music LSI Times of REG-DATA: ",eof
+mes_wait1	db	"FM LSI waitloop times between REG-DATA: ",eof
 mes_wait2	db	" Times (About ",eof
 mes_wait3	db	"ns)",13,10,eof
 
@@ -11169,7 +11180,7 @@ mes_exit	db	"Driver installed.",13,10
 		db	"Now you can use PMD at INT60H.",13,10
 		db	eof
 
-mes_key		db	"Press ESC or GRPH to stop or fast forward the music.",13,10,eof
+mes_key		db	"To stop by ESC key, fast forward by ALT key.",13,10,eof
 
 mes_kankyo	db	"Error setting environment variable pmdopt.",13,10,eof
 
