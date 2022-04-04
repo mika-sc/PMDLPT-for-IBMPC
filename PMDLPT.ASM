@@ -22,10 +22,11 @@ _optnam	equ	"(ADPCM)"
 ;			By M.Kajihara
 ;==============================================================================
  
-ver		equ	"4.8t-Alpha-b42"
+ver			equ	"4.8t-Beta-b44"
 vers		equ	48H
 verc		equ	"s"
 date		equ	"2022"
+codename	equ "Hecatia Lapis"
 
 mdata_def	equ	16
 voice_def	equ	8
@@ -33,7 +34,7 @@ effect_def	equ	4
 key_def		equ	1
 
 ifndef	_myname
-_myname		equ	"PMD     COM"
+_myname		equ	"PMDLPT  COM"
 endif
 
 ifndef	va
@@ -11110,7 +11111,7 @@ pmdlogo2 db "||   ||        ||\ /||      ||   ||       |     |___/   |   ",13,10
 pmdlogo3 db "||III/         ||   ||      ||   ||       |____ |       |   ",13,10,eof
 pmdlogo4 db "||             ||   ||      ||   ||       ",13,10,eof
 pmdlogo5 db "|| rofessional ||   || usic |IIII/ river   v",ver,13,10,eof
-pmdlogo6 db "                                       Codename [KISIN SAGUME]",13,10,13,10,eof
+pmdlogo6 db "                                       Codename [HECATIA LAPIS]",13,10,13,10,eof
 
 mes_warning	db	07,"WARNING:$"
 if	board2
@@ -11268,13 +11269,13 @@ changemes_01	db	"  ----- Settings -----",13,10
 changemes_02	db	"KB",13,10,"- Tone            Data buffer size : ",eof
 changemes_03	db	"KB",13,10,"- FM sound Effect Data buffer size : ",eof
 changemes_1	db	"KB",13,10,"- FM Tone    Volume:",eof
-changemes_2	db	"- SSG Tone   Volume:",eof
+changemes_2	db	"- SSG Tone   Volume : ",eof
 if	board2
-changemes_3	db	"- PCM Tone   Volume:",eof
+changemes_3	db	"- PCM Tone   Volume : ",eof
 if	ppz
-changemes_3z	db	"- PPZ8       Volume:",eof
+changemes_3z	db	"- PPZ8       Volume : ",eof
 endif
-changemes_4	db	    "- Rhythm     Volume:",eof
+changemes_4	db	    "- Rhythm     Volume : ",eof
 changemes_5	db	"- When SSG drum sounds, rhythm sound source is sent out at the same time : ",eof
 changemes_5a	db	"Yes.",13,10,eof
 changemes_5b	db	"No.",13,10,eof
